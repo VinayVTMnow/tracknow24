@@ -1,162 +1,584 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>TrackNow24</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspection Records Portal | Nexthop.ai</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            /* Palette: White, Black, and #00859B */
+            --nh-bg: #ffffff;
+            --nh-black: #000000;
+            --nh-teal: #00859B;
+            --nh-teal-hover: #006d80;
+            --nh-teal-light: #e6f3f5;
+            --nh-border: #e5e7eb;
+            --nh-text-main: #111827;
+            --nh-text-muted: #6b7280;
+            --bs-body-font-family: 'Plus Jakarta Sans', sans-serif;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+        body {
+            color: var(--nh-text-main);
+            background-color: var(--nh-bg);
+            letter-spacing: -0.01em;
+            padding-top: 72px;
+        }
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        /* --- Refined Top Navigation Bar --- */
+        .nh-topbar {
+            height: 72px;
+            background: #ffffff;
+            border-bottom: 3px solid var(--nh-teal);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    color: white;
-}
+        .logo-main {
+            height: 30px;
+            width: auto;
+            display: block;
+        }
 
-/* Navbar */
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 10%;
-}
+        /* Profile Dropdown logic */
+        .profile-wrapper {
+            position: relative;
+        }
 
-nav h2 {
-    color: #22c55e;
-}
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.75rem;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            user-select: none;
+        }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    margin-left: 20px;
-    font-weight: 400;
-}
+        .profile-container:hover {
+            background-color: #f9fafb;
+        }
 
-nav a:hover {
-    color: #22c55e;
-}
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            background-color: var(--nh-black);
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
 
-/* Hero Section */
-.hero {
-    text-align: center;
-    padding: 120px 20px;
-}
+        .profile-info {
+            line-height: 1.2;
+        }
 
-.hero h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-}
+        .profile-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--nh-black);
+        }
 
-.hero span {
-    color: #22c55e;
-}
+        .profile-role {
+            font-size: 0.75rem;
+            color: var(--nh-text-muted);
+        }
 
-.hero p {
-    max-width: 600px;
-    margin: auto;
-    opacity: 0.8;
-    margin-bottom: 30px;
-}
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 220px;
+            background: white;
+            border: 1px solid var(--nh-border);
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            display: none;
+            z-index: 1010;
+            overflow: hidden;
+            padding: 0.5rem 0;
+        }
 
-.btn {
-    padding: 12px 25px;
-    background: #22c55e;
-    border: none;
-    border-radius: 30px;
-    color: black;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
+        .profile-dropdown.show {
+            display: block;
+            animation: dropdownFade 0.2s ease-out;
+        }
 
-.btn:hover {
-    background: #16a34a;
-}
+        @keyframes dropdownFade {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
 
-/* Features */
-.features {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    padding: 80px 10%;
-    flex-wrap: wrap;
-}
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.card {
-    background: #1e293b;
-    padding: 30px;
-    border-radius: 15px;
-    width: 280px;
-    text-align: center;
-    transition: 0.3s;
-}
+        .dropdown-menu-item {
+            padding: 0.6rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--nh-text-main);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
 
-.card:hover {
-    transform: translateY(-10px);
-    background: #334155;
-}
+        .dropdown-menu-item:hover {
+            background-color: #f9fafb;
+            color: var(--nh-teal);
+        }
 
-.card h3 {
-    margin-bottom: 10px;
-    color: #22c55e;
-}
+        .dropdown-menu-item i {
+            width: 16px;
+            height: 16px;
+        }
 
-/* Footer */
-footer {
-    text-align: center;
-    padding: 40px 0;
-    opacity: 0.6;
-    font-size: 14px;
-}
-</style>
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--nh-border);
+            margin: 0.5rem 0;
+        }
+
+        .dropdown-menu-item.logout {
+            color: #dc2626;
+        }
+
+        .dropdown-menu-item.logout:hover {
+            background-color: #fef2f2;
+        }
+
+        /* --- Dashboard Styles --- */
+        .card {
+            border: 1px solid var(--nh-border);
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            background: #ffffff;
+        }
+
+        .stat-card {
+            padding: 1.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--nh-text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-nh-primary {
+            background-color: var(--nh-teal);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.4rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+        }
+
+        .btn-nh-primary:hover {
+            background-color: var(--nh-teal-hover);
+            color: white;
+        }
+
+        .btn-nh-outline {
+            background-color: white;
+            color: var(--nh-black);
+            border: 1px solid var(--nh-black);
+            padding: 0.7rem 1.4rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--nh-text-muted);
+        }
+
+        .search-input {
+            padding-left: 3rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--nh-border);
+            background-color: #f9fafb;
+            height: 48px;
+        }
+
+        .table thead th {
+            background-color: #f9fafb;
+            color: var(--nh-black);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 1rem 1.5rem;
+        }
+
+        .table tbody td {
+            padding: 1.2rem 1.5rem;
+            vertical-align: middle;
+        }
+
+        .text-nh-teal {
+            color: var(--nh-teal) !important;
+        }
+
+        .fw-bold-title {
+            font-weight: 800;
+            color: var(--nh-black);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-passed {
+            background-color: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #d1fae5;
+        }
+
+        .badge-failed {
+            background-color: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fee2e2;
+        }
+
+        .badge-progress {
+            background-color: #fffbeb;
+            color: #92400e;
+            border: 1px solid #fef3c7;
+        }
+
+        .progress {
+            height: 0.5rem;
+            border-radius: 1rem;
+            background-color: #f3f4f6;
+        }
+
+        .bg-nh-teal {
+            background-color: var(--nh-teal);
+        }
+
+        .detail-view {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            background: #ffffff;
+            border: 1px solid var(--nh-border);
+        }
+
+        .header-accent {
+            width: 40px;
+            height: 4px;
+            background: var(--nh-teal);
+            margin-bottom: 1rem;
+        }
+
+        .clickable-row:hover {
+            background-color: #f9fafb;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
 
-<nav>
-    <h2>TrackNow24</h2>
-    <div>
-        <a href="#">Home</a>
-        <a href="#">Features</a>
-        <a href="#">Contact</a>
+    <!-- TOP NAVIGATION BAR -->
+    <nav class="nh-topbar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="brand-group">
+                <!-- Primary Company Logo -->
+                <img src="https://nexthop.ai/wp-content/uploads/2025/02/logo-color.svg" alt="Nexthop.ai" class="logo-main">
+            </div>
+
+            <div class="profile-wrapper">
+                <div class="profile-container" id="profileToggle">
+                    <div class="profile-avatar">JS</div>
+                    <div class="profile-info d-none d-sm-block">
+                        <div class="profile-name">John Smith</div>
+                        <div class="profile-role">QA Inspector</div>
+                    </div>
+                    <i data-lucide="chevron-down" class="text-muted ms-1" style="width: 16px"></i>
+                </div>
+
+                <!-- Profile Dropdown Menu -->
+                <div class="profile-dropdown" id="profileDropdown">
+                    <button class="dropdown-menu-item">
+                        <i data-lucide="user"></i> My Profile
+                    </button>
+                    <button class="dropdown-menu-item">
+                        <i data-lucide="settings"></i> Account Settings
+                    </button>
+                    <button class="dropdown-menu-item">
+                        <i data-lucide="bell"></i> Notifications
+                    </button>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-menu-item">
+                        <i data-lucide="help-circle"></i> Help Center
+                    </button>
+                    <button class="dropdown-menu-item logout">
+                        <i data-lucide="log-out"></i> Log Out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4 py-md-5">
+
+        <!-- LIST VIEW -->
+        <div id="listView" class="fade-in">
+            <header class="mb-5">
+                <div class="header-accent"></div>
+                <h1 class="h2 fw-bold-title mb-1">Quality Inspection Intelligence</h1>
+                <p class="text-muted mb-0">Suitelet view of NetSuite Custom Inspection Records and QA verification status.</p>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="row g-4 mb-5" id="statsContainer">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card stat-card h-100">
+                        <p class="stat-label">Incoming Quality Check</p>
+                        <div class="d-flex align-items-baseline justify-content-between">
+                            <span class="h3 fw-bold mb-0">10</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card stat-card h-100 border-success border-opacity-10">
+                        <p class="stat-label text-success">Outgoing Quality Check</p>
+                        <div class="d-flex align-items-baseline justify-content-between">
+                            <span class="h3 fw-bold mb-0 text-success">20</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card stat-card h-100 border-danger border-opacity-10">
+                        <p class="stat-label text-danger">Customer Returns</p>
+                        <div class="d-flex align-items-baseline justify-content-between">
+                            <span class="h3 fw-bold mb-0 text-danger">3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card stat-card h-100 bg-dark text-white border-0">
+                        <p class="stat-label text-white-50">QA Yield</p>
+                        <div class="d-flex align-items-baseline justify-content-between">
+                            <span class="h3 fw-bold mb-0 text-white">96.4%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Card -->
+            <div class="card">
+                <div class="p-4 border-bottom bg-white">
+                    <div class="row align-items-center g-3">
+                        <div class="col-12">
+                            <div class="search-container">
+                                <i data-lucide="search" class="search-icon" style="width: 20px"></i>
+                                <input type="text" id="searchInput" class="form-control search-input" placeholder="Search by Inspection ID, Manufacturer, or Batch...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Inspection ID</th>
+                                <th>Manufacturer / Vendor</th>
+                                <th>Batch Reference</th>
+                                <th>Inspection Date</th>
+                                <th>Result</th>
+                                <th class="text-end">Verification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inspectionTableBody">
+                            <tr>
+                                <td><span class="fw-bold text-nh-teal">${r.id}</span></td>
+                                <td>
+                                    <div class="fw-bold">${r.vendor}</div>
+                                    <div class="small text-muted">${r.criteria.length} Checkpoints</div>
+                                </td>
+                                <td class="small fw-semibold text-muted">${r.reference}</td>
+                                <td class="small text-muted">${r.date}</td>
+                                <td>${getStatusBadge(r.status)}</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-light p-2 rounded-2 border">
+                                        <i data-lucide="chevron-right" style="width: 16px"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="fw-bold text-nh-teal">${r.id}</span></td>
+                                <td>
+                                    <div class="fw-bold">${r.vendor}</div>
+                                    <div class="small text-muted">${r.criteria.length} Checkpoints</div>
+                                </td>
+                                <td class="small fw-semibold text-muted">${r.reference}</td>
+                                <td class="small text-muted">${r.date}</td>
+                                <td>${getStatusBadge(r.status)}</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-light p-2 rounded-2 border">
+                                        <i data-lucide="chevron-right" style="width: 16px"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="noResults" class="text-center py-5 d-none">
+                    <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
+                        <i data-lucide="microscope" class="text-muted" style="width: 32px; height: 32px"></i>
+                    </div>
+                    <h5 class="fw-bold">No records retrieved</h5>
+                    <p class="text-muted">No custom inspection records match your current criteria.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DETAIL VIEW -->
+        <div id="detailView" class="detail-view fade-in">
+            <div class="d-flex align-items-center mb-5">
+                <button onclick="showListView()" class="back-btn me-3">
+                    <i data-lucide="chevron-left" class="text-dark"></i>
+                </button>
+                <div>
+                    <h2 class="h3 fw-bold-title mb-0" id="detailIdText">INSP-XXXXX</h2>
+                    <p class="text-muted small mb-0">Quality Audit Trail & Criteria Check</p>
+                </div>
+                <div class="ms-auto d-flex gap-2">
+                    <button class="btn btn-nh-outline shadow-sm d-none d-md-inline-flex align-items-center">
+                        <i data-lucide="file-text" class="me-2" style="width: 16px"></i> Full Report
+                    </button>
+                    <button class="btn btn-nh-primary">Submit Verification</button>
+                </div>
+            </div>
+
+            <!-- Info Grid -->
+            <div class="row g-4 mb-5" id="detailHeaderGrid">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Items Table -->
+            <div class="card border-0 shadow-sm border">
+                <div class="card-header bg-white py-4 px-4 d-flex justify-content-between align-items-center border-bottom">
+                    <h6 class="fw-bold-title mb-0">Inspection Checklist & Criteria</h6>
+                    <span class="badge bg-dark text-white px-3 py-2" id="detailItemCount">0 Criteria</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Parameter / Criteria</th>
+                                <th>Threshold</th>
+                                <th>Observed Value</th>
+                                <th style="width: 280px">Variance Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detailItemsBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-5 pt-5 border-top d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
+            <div class="d-flex flex-column flex-md-row align-items-center gap-3">
+                <p class="text-muted small mb-0">&copy; 2026 Nexthop.ai &bull; Quality Management</p>
+                <div class="footer-separator d-none d-md-block"></div>
+                <div class="footer-powered">
+                    <span class="powered-label">Powered By</span>
+                    <img src="https://i.postimg.cc/HWtXzb6H/1-1-removebg-preview.png" alt="Partner Logo" style="width: 130px;" class="logo-partner-footer ms-2">
+                </div>
+            </div>
+        </footer>
     </div>
-</nav>
 
-<section class="hero">
-    <h1>Track Smarter. <span>Grow Faster.</span></h1>
-    <p>
-        TrackNow24 helps you monitor, manage, and grow your business or data in real-time with powerful analytics and simple tools.
-    </p>
-    <button class="btn">Get Started</button>
-</section>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const profileToggle = document.getElementById('profileToggle');
+        const profileDropdown = document.getElementById('profileDropdown');
 
-<section class="features">
-    <div class="card">
-        <h3>Real-Time Tracking</h3>
-        <p>Monitor activities and performance instantly with live updates.</p>
-    </div>
+        // Toggle Profile Dropdown
+        profileToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('show');
+        });
 
-    <div class="card">
-        <h3>Analytics Dashboard</h3>
-        <p>Visual insights that help you make smarter business decisions.</p>
-    </div>
-
-    <div class="card">
-        <h3>Secure & Reliable</h3>
-        <p>Built with modern cloud infrastructure for safety and speed.</p>
-    </div>
-</section>
-
-<footer>
-    © 2026 TrackNow24. All rights reserved.
-</footer>
-
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target) && !profileToggle.contains(e.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+    </script>
 </body>
+
 </html>
