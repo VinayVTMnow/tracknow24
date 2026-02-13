@@ -1,20 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>TrackNow24</title>
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            margin-top: 100px;
-        }
-        h1 {
-            color: green;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TrackNow24</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+}
+
+/* Navbar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10%;
+}
+
+nav h2 {
+    color: #22c55e;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 400;
+}
+
+nav a:hover {
+    color: #22c55e;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 120px 20px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.hero span {
+    color: #22c55e;
+}
+
+.hero p {
+    max-width: 600px;
+    margin: auto;
+    opacity: 0.8;
+    margin-bottom: 30px;
+}
+
+.btn {
+    padding: 12px 25px;
+    background: #22c55e;
+    border: none;
+    border-radius: 30px;
+    color: black;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #16a34a;
+}
+
+/* Features */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 80px 10%;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 15px;
+    width: 280px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    background: #334155;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    color: #22c55e;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 40px 0;
+    opacity: 0.6;
+    font-size: 14px;
+}
+</style>
 </head>
+
 <body>
-    <h1>Welcome to TrackNow24 🚀</h1>
-    <p>Website is live!</p>
+
+<nav>
+    <h2>TrackNow24</h2>
+    <div>
+        <a href="#">Home</a>
+        <a href="#">Features</a>
+        <a href="#">Contact</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>Track Smarter. <span>Grow Faster.</span></h1>
+    <p>
+        TrackNow24 helps you monitor, manage, and grow your business or data in real-time with powerful analytics and simple tools.
+    </p>
+    <button class="btn">Get Started</button>
+</section>
+
+<section class="features">
+    <div class="card">
+        <h3>Real-Time Tracking</h3>
+        <p>Monitor activities and performance instantly with live updates.</p>
+    </div>
+
+    <div class="card">
+        <h3>Analytics Dashboard</h3>
+        <p>Visual insights that help you make smarter business decisions.</p>
+    </div>
+
+    <div class="card">
+        <h3>Secure & Reliable</h3>
+        <p>Built with modern cloud infrastructure for safety and speed.</p>
+    </div>
+</section>
+
+<footer>
+    © 2026 TrackNow24. All rights reserved.
+</footer>
+
 </body>
 </html>
